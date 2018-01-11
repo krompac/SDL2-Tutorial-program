@@ -1,6 +1,16 @@
 ﻿#pragma once
 
-//TODO: napraviti klasu s ovim f-jama dole
+//TODO: napraviti klasu s ovim f-jama za prozor
+
+enum KeyPressSurfaces
+{
+	KEY_PRESS_SURFACE_DEFAULT,
+	KEY_PRESS_SURFACE_UP,
+	KEY_PRESS_SURFACE_DOWN,
+	KEY_PRESS_SURFACE_LEFT,
+	KEY_PRESS_SURFACE_RIGHT,
+	KEY_PRESS_SURFACE_TOTAL
+};
 
 //drzi otvoren prozor tak dugo dok ne stisnem x gore ili stisnem gumb na tipkovnici ili mišu
 bool zatvori_prozor()
@@ -11,12 +21,12 @@ bool zatvori_prozor()
 	{
 		switch (dogadjaj.type)
 		{
-		case SDL_QUIT:
-			return true;
-		case SDL_MOUSEBUTTONDOWN:
-			return true;
-		case SDL_KEYDOWN:
-			return true;
+			case SDL_QUIT:
+				return true;
+			case SDL_MOUSEBUTTONDOWN:
+				return true;
+			case SDL_KEYDOWN:
+				return true;
 		}
 
 		return false;
