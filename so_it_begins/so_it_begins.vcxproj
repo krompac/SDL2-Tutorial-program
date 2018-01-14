@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="prozor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="prozor.h" />
