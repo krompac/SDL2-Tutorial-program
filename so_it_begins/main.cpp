@@ -4,7 +4,17 @@
 
 int main()
 {
-	Prozor pokreni;
+	Prozor *pokreni = new Prozor;
+
+	bool radi = true;
+
+	while (radi)
+	{
+		radi = pokreni->zatvori_prozor();
+		pokreni->postavi_sliku();
+	}
+
+	delete pokreni;
 
 	return 0;
 }

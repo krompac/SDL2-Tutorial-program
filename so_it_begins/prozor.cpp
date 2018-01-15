@@ -1,6 +1,6 @@
-#include "prozor.h"
+﻿#include "prozor.h"
 
-void Prozor::close()
+Prozor::~Prozor()
 {
 	SDL_FreeSurface(povrsina);
 	povrsina = NULL;
@@ -11,69 +11,27 @@ void Prozor::close()
 	SDL_Quit();
 }
 
-SDL_Surface * Prozor::ucitaj_sliku(std::string ime)
+SDL_Surface* Prozor::ucitaj_sliku(std::string ime)
 {
 	SDL_Surface *picture = SDL_LoadBMP(ime.c_str());
+	SDL_Surface *optimizirana_slika = NULL;
 
 	if (picture == NULL)
 	{
 		std::cout << "ERROR: " << SDL_GetError() << std::endl;
 	}
-
-	return picture;
-}
-
-SDL_Surface * Prozor::ucitaj_strelice(KeyPressSurfaces uvjet)
-{
-	SDL_Surface* slike_tipki[TOTAL];
-
-	switch (uvjet)
+	else
 	{
-		case UP:
-			slike_tipki[UP] = ucitaj_sliku("strelice/gore.bmp");
-			break;
-		case DOWN:
-			slike_tipki[DOWN] = ucitaj_sliku("strelice/dole.bmp");
-			break;
-		case LEFT:
-			slike_tipki[LEFT] = ucitaj_sliku("strelice/levo.bmp");
-			break;
-		case RIGHT:
-			slike_tipki[RIGHT] = ucitaj_sliku("strelice/desno.bmp");
-			break;
-		default:
-			slike_tipki[DEFAULT] = ucitaj_sliku("strelice/default.bmp");
-			break;
+		//pretvori sliku da bude zadovoljila format ekrana
+		optimizirana_slika = SDL_ConvertSurface(picture, povrsina->format, NULL);
+		if (!optimizirana_slika)
+			std::cout << "Greška kod optimizacije slike!\nError: " << SDL_GetError() << std::endl;
+
+		//makne se prvo učitana slika
+		SDL_FreeSurface(picture);
 	}
 
-	return slike_tipki[uvjet];
-}
-
-void Prozor::prikazi_strelice()
-{
-	SDL_Surface *slika = NULL;
-
-	switch (tipka.key.keysym.sym)
-	{
-		case SDLK_UP:
-			slika = ucitaj_strelice(UP);
-			break;
-		case SDLK_DOWN:
-			slika = ucitaj_strelice(DOWN);
-			break;
-		case SDLK_RIGHT:
-			slika = ucitaj_strelice(RIGHT);
-			break;
-		case SDLK_LEFT:
-			slika = ucitaj_strelice(LEFT);
-			break;
-		default:
-			slika = ucitaj_strelice(DEFAULT);
-			break;
-	}
-
-	SDL_BlitSurface(slika, 0, povrsina, 0);
-	SDL_UpdateWindowSurface(prozor);
+	return optimizirana_slika;
 }
 
 bool Prozor::zatvori_prozor()
@@ -82,26 +40,20 @@ bool Prozor::zatvori_prozor()
 	{
 		if (tipka.type == SDL_QUIT)
 		{
-			close();
 			return false;
-		}
-		else //if (tipka.type == SDL_KEYDOWN)
-		{
-			prikazi_strelice();
-			return true;
 		}
 	}
 
 	return true;
 }
 
-void Prozor::glavna()
+void Prozor::init()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		std::cout << "Gre�ka: " << SDL_GetError() << std::endl;
+		std::cout << "Greška: " << SDL_GetError() << std::endl;
 
 		return;
 	}
@@ -111,26 +63,32 @@ void Prozor::glavna()
 
 	if (!prozor)
 	{
-		std::cout << "Gre�ka: " << SDL_GetError() << std::endl;
+		std::cout << "Greška: " << SDL_GetError() << std::endl;
 
 		return;
 	}
 
 	//povrsina od prozora
 	povrsina = SDL_GetWindowSurface(prozor);
+}
 
-	//pocetna slika da bude default
-	slika = ucitaj_strelice(DEFAULT);
-	SDL_BlitSurface(slika, 0, povrsina, 0);
-	SDL_UpdateWindowSurface(prozor);
+void Prozor::postavi_sliku()
+{
+	this->slika = ucitaj_sliku("stretch.bmp");
 
-
-	bool delaj = true;
-
-	//PLAY tak dugo dok nema X
-	while (delaj)
+	if (!this->slika)
 	{
-		delaj = zatvori_prozor();
+		std::cout << "Bila je greška!\n";
+		return;
 	}
+
+	pravokutnik.x = 0;
+	pravokutnik.y = 0;
+	pravokutnik.w = width;
+	pravokutnik.h = height;
+
+	//koristi se ova f-ja da se rastegne neka slika u neki okvir
+	SDL_BlitScaled(slika, 0, povrsina, &pravokutnik);
+	SDL_UpdateWindowSurface(prozor);
 }
 

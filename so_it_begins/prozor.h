@@ -22,20 +22,25 @@ class Prozor
 		SDL_Window *prozor;
 		SDL_Event tipka;
 
+		const int width = 720;
+		const int height = 480;
+
+		SDL_Rect pravokutnik;
 	public:
-		//na temelju inputa iz funkcije prikazi strelice preuzima strelicu koja se bude prikazala
-		SDL_Surface * ucitaj_strelice(KeyPressSurfaces uvjet);
-		//koristi input tipke iz zatvori_prozor da prikaze sliku
-		void prikazi_strelice();
 		//drzi otvoren prozor tak dugo dok ne stisnem x gore
-		//inace se koristi za input po kojem se prikazuju strelice
 		bool zatvori_prozor();
-		//glavna f-ja za prozor
-		void glavna();
+		//inicijalna f-ja za prozor
+		void init();
+		//postavi sliku
+		void postavi_sliku();
 
-		Prozor() : prozor(NULL), povrsina(NULL), slika(NULL) { this->glavna(); };
+		Prozor() : prozor(NULL), povrsina(NULL), slika(NULL) 
+		{ 
 
-		void close();
+			this->init(); 
+		}
+		~Prozor();
+
 		SDL_Surface *ucitaj_sliku(std::string ime);
 };
 
