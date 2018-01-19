@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <SDL.h>
+#include <SDL_image.h>
 #include <iostream>
 
 //TODO: promeniti glavnu f-ju (stavi ju u main f-ju kod main.cpp) i destruktor
@@ -21,6 +22,11 @@ class Prozor
 		SDL_Surface *povrsina, *slika;
 		SDL_Window *prozor;
 		SDL_Event tipka;
+
+		//flag je predefinirani bit ili niz bitova koji sadrza binarnu vrijednost
+		//u ovom našem slučaju, program inicijalizira zastavicu da zna predati to funkciju
+		//po enumaratoru i da funkcija
+		int imgFlags;
 
 		const int width = 720;
 		const int height = 480;

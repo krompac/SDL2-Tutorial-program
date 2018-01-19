@@ -13,7 +13,7 @@ Prozor::~Prozor()
 
 SDL_Surface* Prozor::ucitaj_sliku(std::string ime)
 {
-	SDL_Surface *picture = SDL_LoadBMP(ime.c_str());
+	SDL_Surface *picture = IMG_Load(ime.c_str());
 	SDL_Surface *optimizirana_slika = NULL;
 
 	if (picture == NULL)
@@ -68,13 +68,24 @@ void Prozor::init()
 		return;
 	}
 
+	//inicijalizacija učitavanja slike (..._PNG je tip slike koji budemo učitali)
+	imgFlags = IMG_INIT_PNG;
+	//img init ucitava iz biblioteka funkcije za učitavanje slike, prima parametar za zastavice
+	//po kojoj zna za koju sliku
+	//if provjerava jel je to uspelo, ak nije ispisuje grešku
+	if (!IMG_Init(imgFlags) && imgFlags)
+	{
+		std::cout << "Greška: " << IMG_GetError() << std::endl;
+		return;
+	}
+
 	//povrsina od prozora
 	povrsina = SDL_GetWindowSurface(prozor);
 }
 
 void Prozor::postavi_sliku()
 {
-	this->slika = ucitaj_sliku("stretch.bmp");
+	this->slika = ucitaj_sliku("tiger.png");
 
 	if (!this->slika)
 	{
@@ -84,8 +95,8 @@ void Prozor::postavi_sliku()
 
 	pravokutnik.x = 0;
 	pravokutnik.y = 0;
-	pravokutnik.w = width;
-	pravokutnik.h = height;
+	pravokutnik.w = 720;
+	pravokutnik.h = 480;
 
 	//koristi se ova f-ja da se rastegne neka slika u neki okvir
 	SDL_BlitScaled(slika, 0, povrsina, &pravokutnik);
