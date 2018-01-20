@@ -23,6 +23,14 @@ class Prozor
 		SDL_Window *prozor;
 		SDL_Event tipka;
 
+		//renderer je zapravo nekaj u kaj se spremaju postupci renderinga
+		//rendering je postupak prikazivanja slike na kompu
+		SDL_Renderer *global_renderer;
+
+		//globalna textura u koju budemo učitavali texture koje se kasnije
+		//budu prikazivale prek renderera
+		SDL_Texture *global_texture;
+
 		//flag je predefinirani bit ili niz bitova koji sadrza binarnu vrijednost
 		//u ovom našem slučaju, program inicijalizira zastavicu da zna predati to funkciju
 		//po enumaratoru i da funkcija
@@ -40,13 +48,13 @@ class Prozor
 		//postavi sliku
 		void postavi_sliku();
 
-		Prozor() : prozor(NULL), povrsina(NULL), slika(NULL) 
+		Prozor() : prozor(NULL), povrsina(NULL), slika(NULL) , global_renderer(NULL)
 		{ 
 
 			this->init(); 
 		}
 		~Prozor();
 
-		SDL_Surface *ucitaj_sliku(std::string ime);
+		SDL_Texture *ucitaj_sliku(std::string ime);
 };
 
