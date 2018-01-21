@@ -186,3 +186,34 @@ void Prozor::nacrtaj_pravokutnik()
 	SDL_RenderPresent(global_renderer);
 }
 
+void Prozor::render_objekt()
+{
+	this->global_texture = ucitaj_sliku("tiger.png");
+
+	if (!this->global_texture)
+	{
+		std::cout << "Bila je greška!\n";
+		return;
+	}
+
+	//očisti ekran od prijašnjeg renderera
+	SDL_RenderClear(global_renderer);
+
+	//prva dva argumenta su koordinate (u sdl-u pocnu od gore levo)
+	SDL_Rect gore_levo = { 0, 0, width / 2, height / 2 };
+	//rendera se gore levo dio prozora
+	SDL_RenderSetViewport(global_renderer, &gore_levo);
+	//renderira se textura u taj viewport
+	SDL_RenderCopy(global_renderer, global_texture, 0, 0);
+
+	SDL_Rect gore_desno = { width / 2, 0, width / 2, height / 2 };
+	SDL_RenderSetViewport(global_renderer, &gore_desno);
+	SDL_RenderCopy(global_renderer, global_texture, 0, 0);
+
+	SDL_Rect dole = { 0, height / 2, width, height / 2 };
+	SDL_RenderSetViewport(global_renderer, &dole);
+	SDL_RenderCopy(global_renderer, global_texture, 0, 0);
+
+	SDL_RenderPresent(global_renderer);
+}
+

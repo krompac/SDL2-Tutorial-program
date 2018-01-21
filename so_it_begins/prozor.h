@@ -49,11 +49,12 @@ class Prozor
 		void postavi_sliku();
 		//funkcija za nacrtati pravokutnik prek renderera u prozoru
 		void nacrtaj_pravokutnik();
-
+		//funkcija slicna nacrtaj_pravokutnik, koristi se za viewport
+		//tj. za pravokutnike koji imaju svaki svoji prostor u prozoru
+		void render_objekt();
 
 		Prozor() : prozor(NULL), povrsina(NULL), slika(NULL) , global_renderer(NULL)
 		{ 
-
 			this->init(); 
 		}
 		~Prozor();
