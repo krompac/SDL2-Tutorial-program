@@ -12,7 +12,7 @@ int main()
 	while (radi)
 	{
 		radi = pokreni->zatvori_prozor();
-		pokreni->postavi_sliku();
+		pokreni->nacrtaj_pravokutnik();
 	}
 
 	delete pokreni;

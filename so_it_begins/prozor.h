@@ -47,6 +47,9 @@ class Prozor
 		void init();
 		//postavi sliku
 		void postavi_sliku();
+		//funkcija za nacrtati pravokutnik prek renderera u prozoru
+		void nacrtaj_pravokutnik();
+
 
 		Prozor() : prozor(NULL), povrsina(NULL), slika(NULL) , global_renderer(NULL)
 		{ 
